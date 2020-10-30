@@ -99,10 +99,12 @@ namespace medikeeper_api.Controllers
             if (itemToUpdate is null)
                 return NotFound();
 
-            var itemsWithExtId = await Dao.GetItemsByExternalId(model.ExternalId);
-            if (itemsWithExtId.Count() != 0)
-                return BadRequest("Item with that ExternalID already exists");
-
+            if (model.ExternalId != itemToUpdate.ExternalId)
+            {
+                var itemsWithExtId = await Dao.GetItemsByExternalId(model.ExternalId);
+                if (itemsWithExtId.Count() != 0)
+                    return BadRequest("Item with that ExternalID already exists");
+            }
             var item = ItemMapper.ModelToEntity(model);
             var success = await Dao.UpdateItem(id, item);
             if (!success)

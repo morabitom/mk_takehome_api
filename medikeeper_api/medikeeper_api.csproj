@@ -155,7 +155,7 @@
   <ItemGroup>
     <Content Include="connections.config" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\medikeeper-api - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\mk-takehome-api - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
