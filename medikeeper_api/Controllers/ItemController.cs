@@ -21,32 +21,17 @@ namespace medikeeper_api.Controllers
         {
             Dao = new ItemDAO();
         }
-        [Route()]
+        [Route("")]
         public async Task<IHttpActionResult> Get(bool onlyMax = false)
         {
             IEnumerable<Item> items;
-            IEnumerable<ItemModel> modelItems;
             if (onlyMax)
-            {
                 items = await Dao.GetItemsWithMaxPrices(); 
-                modelItems = items.Select(x => ItemMapper.EntityToModel(x));
-                return Ok(modelItems.Select(x => new { x.Name, x.Cost }));
-            }
             else
-            {
                 items = await Dao.GetItems();
-                modelItems = items.Select(x => ItemMapper.EntityToModel(x));
-                return Ok(modelItems);
-            }
-        }
 
-        [Route("{id:int}", Name = "GetItemById")]
-        public async Task<IHttpActionResult> GetById(int id)
-        {
-            var item = await Dao.GetItemById(id);
-            if (item is null)
-                return NotFound();
-            return Ok(ItemMapper.EntityToModel(item));
+            var modelItems = items.Select(x => ItemMapper.EntityToModel(x));
+            return Ok(modelItems);
         }
 
         [Route("{name}", Name = "GetItemByName")]
@@ -66,6 +51,15 @@ namespace medikeeper_api.Controllers
                     return NotFound();
                 return Ok(items.Select(x => ItemMapper.EntityToModel(x)));
             }
+        }
+
+        [Route("{id:int}", Name = "GetItemById")]
+        public async Task<IHttpActionResult> GetById(int id)
+        {
+            var item = await Dao.GetItemById(id);
+            if (item is null)
+                return NotFound();
+            return Ok(ItemMapper.EntityToModel(item));
         }
 
         [Route()]

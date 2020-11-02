@@ -28,8 +28,9 @@ namespace medikeeper_api.Data
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
+                var searchTerm = $"%{name}%";
                 var items = await connection.QueryAsync<Item>(
-                                $"SELECT * FROM Item WHERE Name = {name}");
+                                "SELECT * FROM Item WHERE Name LIKE @searchTerm", new { searchTerm });
                 return items;
             }
         }
@@ -39,7 +40,7 @@ namespace medikeeper_api.Data
             using (var connection = new SqlConnection(ConnectionString))
             {
                 var item = await connection.QuerySingleOrDefaultAsync<Item>(
-                                $"SELECT * FROM Item WHERE Id = {id}");
+                                "SELECT * FROM Item WHERE Id = @id", new { id });
                 return item;
             }
         }
@@ -49,7 +50,7 @@ namespace medikeeper_api.Data
             using (var connection = new SqlConnection(ConnectionString))
             {
                 var items = await connection.QueryAsync<Item>(
-                                $"SELECT * FROM Item WHERE ExternalId = {externalId}");
+                                "SELECT * FROM Item WHERE ExternalId = @externalId", new { externalId });
                 return items;
             }
         }
@@ -100,7 +101,7 @@ namespace medikeeper_api.Data
             using (var connection = new SqlConnection(ConnectionString))
             {
                 var item = await connection.QuerySingleOrDefaultAsync<Item>(
-                                $"SELECT * FROM maxpricesbyitem_view WHERE Name = {name}");
+                                $"SELECT * FROM maxpricesbyitem_view WHERE Name = @name", new { name });
                 return item;
             }
         }
