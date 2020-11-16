@@ -1,6 +1,7 @@
 ﻿using medikeeper_api.Data;
 using medikeeper_api.Data.Entities;
 using medikeeper_api.Models;
+using Swashbuckle.Examples;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.UI.WebControls;
+using System.Net;
 
 namespace medikeeper_api.Controllers
 {
@@ -22,6 +24,7 @@ namespace medikeeper_api.Controllers
             Dao = new ItemDAO();
         }
         [Route("")]
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(ItemModelGetListExample))]
         public async Task<IHttpActionResult> Get(bool onlyMax = false)
         {
             IEnumerable<Item> items;
@@ -35,6 +38,7 @@ namespace medikeeper_api.Controllers
         }
 
         [Route("{name}", Name = "GetItemByName")]
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(ItemModelGetExample))]
         public async Task<IHttpActionResult> GetByName(string name, bool onlyMax = false)
         {
             if (onlyMax)
@@ -54,6 +58,7 @@ namespace medikeeper_api.Controllers
         }
 
         [Route("{id:int}", Name = "GetItemById")]
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(ItemModelGetExample))]
         public async Task<IHttpActionResult> GetById(int id)
         {
             var item = await Dao.GetItemById(id);
@@ -63,6 +68,8 @@ namespace medikeeper_api.Controllers
         }
 
         [Route()]
+        [SwaggerRequestExample(typeof(ItemModel), typeof(ItemModelPostExample))] 
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(ItemModelGetExample))]
         public async Task<IHttpActionResult> Post(ItemModel model)
         {
             if (!ModelState.IsValid)
@@ -82,6 +89,8 @@ namespace medikeeper_api.Controllers
         }
 
         [Route("{id}")]
+        [SwaggerRequestExample(typeof(ItemModel), typeof(ItemModelPostExample))] 
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(ItemModelGetExample))]
         public async Task<IHttpActionResult> Put(int id, ItemModel model)
         {
             if (!ModelState.IsValid)

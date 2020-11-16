@@ -4,6 +4,7 @@ namespace medikeeper_api.Models
 {
     public class ItemModel
     {
+        [SwaggerExclude]
         public int? Id { get; set; }
         [Required]
         [StringLength(10)]
